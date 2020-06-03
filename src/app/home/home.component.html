@@ -1,0 +1,16 @@
+<mat-form-field appearance="fill">
+  <mat-label>Select branch type</mat-label>
+  <mat-select [(value)]="selectedBranchType">
+    <mat-option *ngFor="let branchType of branchTypes" [value]="branchType">{{branchType}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<br />
+<mat-form-field class="full-width">
+  <mat-label>Jira</mat-label>
+  <input matInput [(ngModel)]="jiraName">
+</mat-form-field>
+<br />
+<mat-form-field class="full-width">
+  <mat-label>Branch name</mat-label>
+  <input matInput [value]="branchName" [readonly]="true">
+</mat-form-field>

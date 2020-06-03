@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ngMalJiraBranchName';
+  isSideNavOpened = false;
+
+  toggleSideNav() {
+    this.isSideNavOpened = !this.isSideNavOpened;
+  }
+
+  navigateTo() {
+    this.isSideNavOpened = false;
+  }
 }
