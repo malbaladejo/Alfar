@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faQuestionCircle, faHome } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'ngMalJiraBranchName';
   isSideNavOpened = false;
+  faQuestionCircle = faQuestionCircle;
+  faHome = faHome;
 
   toggleSideNav() {
     this.isSideNavOpened = !this.isSideNavOpened;
