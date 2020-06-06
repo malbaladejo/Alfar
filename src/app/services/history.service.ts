@@ -4,7 +4,7 @@ import { BranchNameHistory } from './history';
   providedIn: 'root'
 })
 export class HistoryService {
-  private storageKey = "history_key";
+  private storageKey = 'history_key';
 
   private historyItems: Array<BranchNameHistory>;
 

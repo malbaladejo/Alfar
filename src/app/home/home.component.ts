@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { StringService } from '../services/string.service';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private _clipboard: Clipboard, private _snackBar: MatSnackBar) { }
+  constructor(
+    private clipboard: Clipboard,
+    private snackBar: MatSnackBar,
+    private stringService: StringService) { }
 
   private _selectedBranchType = 'feature';
   private _jiraName: string;
@@ -42,42 +46,29 @@ export class HomeComponent implements OnInit {
 
     this.branchName = null;
 
-    if (!this._jiraName || !this.selectedBranchType)
+    if (!this._jiraName || !this.selectedBranchType) {
       return;
+    }
 
     this.branchName = this.selectedBranchType + '/' + this.getFormattedBranchName();
-    this._clipboard.copy(this.branchName);
+    this.clipboard.copy(this.branchName);
     this.openSnackBar();
   }
 
   private openSnackBar() {
-    this._snackBar.open("Le nom de la branche a été copié dans le presse papier", null, {
+    this.snackBar.open('Le nom de la branche a été copié dans le presse papier', null, {
       duration: 2000,
     });
   }
 
   private getFormattedBranchName(): string {
+    const name = this.stringService.removeUnauthorizedCharacters(this._jiraName);
+    const lines = name.split('\n');
 
-    var name = this._jiraName
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, '')
-      .trim()
-      .replace(/'/g, '-')
-      .replace(/ /, '-')
-      .replace(/\r/, '')
-      .replace(/[^a-zA-Z0-9]/g, '-');
+    if (lines.length === 1) {
+      return this.stringService.removeDuplicateString(name, '--', '-');
+    }
 
-    var lines = name.split('\n');
-
-    if (lines.length == 1)
-      return this.removeDuplicateString(name, '--', '-');
-
-    return lines[0] + '-' + this.removeDuplicateString(lines[1], '--', '-').toLocaleLowerCase()
-  }
-
-  private removeDuplicateString(value: string, search: string, replace: string): string {
-    while (value.indexOf(search) >= 0)
-      value = value.replace(search, replace);
-    return value;
+    return lines[0] + '-' + this.stringService.removeDuplicateString(lines[1], '--', '-').toLocaleLowerCase();
   }
 }
